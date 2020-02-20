@@ -1,0 +1,28 @@
+// product-service/proto/product/product.proto
+
+syntax = "proto3";
+
+package product;
+
+message Product {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    double price = 4;
+    string picture = 5;
+    bool status = 6;
+}
+
+message CreateProductResponse {
+    Product addedProduct = 1;
+    Error error = 2;
+}
+
+message Error {
+    string code = 1;
+    string message = 2;
+}
+
+service ProductService {
+    rpc CreateProduct(Product) returns (CreateProductResponse) {}
+}

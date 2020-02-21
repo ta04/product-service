@@ -14,7 +14,7 @@ message Product {
 }
 
 message CreateProductResponse {
-    Product addedProduct = 1;
+    Product createdProduct = 1;
     Error error = 2;
 }
 

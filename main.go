@@ -18,6 +18,7 @@ const (
 
 type repository interface {
 	Create(*pb.Product) (*pb.Product, error)
+	GetAll() []*pb.Product
 }
 
 type Repository struct {
@@ -34,6 +35,10 @@ func (repo *Repository) Create(product *pb.Product) (*pb.Product, error) {
 	return product, nil
 }
 
+func (repo *Repository) GetAll() []*pb.Product {
+	return repo.products
+}
+
 type service struct {
 	repo repository
 }
@@ -48,6 +53,14 @@ func (s *service) CreateProduct(ctx context.Context, req *pb.Product) (*pb.Creat
 		CreatedProduct: product,
 		Error: nil,
 	}, err
+}
+
+func (s *service) GetAllProducts(ctx context.Context, req *pb.GetAllProductsRequest) (*pb.GetAllProductsResponse, error) {
+	products := s.repo.GetAll()
+
+	return &pb.GetAllProductsResponse{
+		Products: products,
+	}, nil
 }
 
 func main() {

@@ -4,6 +4,7 @@ syntax = "proto3";
 
 package product;
 
+// Product message
 message Product {
     string id = 1;
     string name = 2;
@@ -13,16 +14,29 @@ message Product {
     bool status = 6;
 }
 
+// GetAllProductsRequest message
+message GetAllProductsRequest {}
+
+// CreateProductsResponse message
 message CreateProductResponse {
     Product createdProduct = 1;
     Error error = 2;
 }
 
+message GetAllProductsResponse {
+    repeated Product products = 1;
+}
+
+// Error message
 message Error {
     string code = 1;
     string message = 2;
 }
 
+// ProductService service
 service ProductService {
+    // Method to create a product
     rpc CreateProduct(Product) returns (CreateProductResponse) {}
+    // Method to get all products
+    rpc GetAllProducts(GetAllProductsRequest) returns (GetAllProductsResponse) {}
 }

@@ -6,7 +6,7 @@ package product;
 
 // Product message
 message Product {
-    string id = 1;
+    int32 id = 1;
     string name = 2;
     string description = 3;
     double price = 4;

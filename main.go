@@ -22,6 +22,7 @@ const (
 type repository interface {
 	Create(*pb.Product) (*pb.Product, error)
 	GetAll() ([]*pb.Product, error)
+	Delete(*pb.Product) (*pb.Product, error)
 }
 
 type Repository struct {
@@ -31,7 +32,7 @@ type Repository struct {
 
 func (repo *Repository) Create(product *pb.Product) (*pb.Product, error) {
 	repo.mu.Lock()
-	query := fmt.Sprintf("INSERT INTO product (name, description, price, picture, status)" +
+	query := fmt.Sprintf("INSERT INTO product (name, description, price, picture, status)"+
 		"VALUES ('%s', '%s', %f, '%s', %t)", product.Name, product.Description, product.Price, product.Picture, product.Status)
 	_, err := repo.db.Exec(query)
 	repo.mu.Unlock()
@@ -54,12 +55,12 @@ func (repo *Repository) GetAll() (products []*pb.Product, err error) {
 			return nil, err
 		}
 		product := pb.Product{
-			Id: id,
-			Name: name,
+			Id:          id,
+			Name:        name,
 			Description: description,
-			Picture: picture,
-			Price: price,
-			Status: status,
+			Picture:     picture,
+			Price:       price,
+			Status:      status,
 		}
 		products = append(products, &product)
 	}
@@ -67,27 +68,49 @@ func (repo *Repository) GetAll() (products []*pb.Product, err error) {
 	return products, err
 }
 
+func (repo *Repository) Delete(product *pb.Product) (*pb.Product, error) {
+	repo.mu.Lock()
+	query := fmt.Sprintf("DELETE FROM product WHERE product.id=%d", product.Id)
+	_, err := repo.db.Exec(query)
+	repo.mu.Unlock()
+
+	return product, err
+
+}
+
 type service struct {
 	repo repository
 }
 
-func (s *service) CreateProduct(ctx context.Context, req *pb.Product) (*pb.CreateProductResponse, error) {
+func (s *service) CreateProduct(ctx context.Context, req *pb.Product) (*pb.Response, error) {
 	product, err := s.repo.Create(req)
 	if err != nil {
 		return nil, err
 	}
 
-	return &pb.CreateProductResponse{
-		CreatedProduct: product,
-		Error: nil,
+	return &pb.Response{
+		Product: product,
+		Error:   nil,
 	}, err
 }
 
-func (s *service) GetAllProducts(ctx context.Context, req *pb.GetAllProductsRequest) (*pb.GetAllProductsResponse, error) {
+func (s *service) GetAllProducts(ctx context.Context, req *pb.GetAllProductsRequest) (*pb.Response, error) {
 	products, err := s.repo.GetAll()
 
-	return &pb.GetAllProductsResponse{
+	return &pb.Response{
 		Products: products,
+	}, err
+}
+
+func (s *service) DeleteProduct(ctx context.Context, req *pb.Product) (*pb.Response, error) {
+	product, err := s.repo.Delete(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.Response{
+		Product: product,
+		Error:   nil,
 	}, err
 }
 

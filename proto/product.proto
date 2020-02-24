@@ -17,20 +17,11 @@ message Product {
 // GetAllProductsRequest is a message for requesting all products
 message GetAllProductsRequest {}
 
-// DeleteProductRequest is a message for deleting a product
-message DeleteProductRequest {
-    int32 id = 1;
-}
-
-// SingleJobResponse is a message for a single job response
-message SingleJobResponse {
+// Response is a message for a response
+message Response {
     Product product = 1;
     Error error = 2;
-}
-
-// MultipleJobResponse is a message for a multiple job response
-message MultipleJobResponse {
-    repeated Product products = 1;
+    repeated Product products = 3;
 }
 
 // Error is a message for errors
@@ -42,9 +33,9 @@ message Error {
 // ProductService service
 service ProductService {
     // Method to create a product
-    rpc CreateProduct(Product) returns (SingleJobResponse) {}
+    rpc CreateProduct(Product) returns (Response) {}
     // Method to get all products
-    rpc GetAllProducts(GetAllProductsRequest) returns (MultipleJobResponse) {}
+    rpc GetAllProducts(GetAllProductsRequest) returns (Response) {}
     // Method to delete a product
-    rpc DeleteProduct(DeleteProductRequest) returns (SingleJobResponse) {}
+    rpc DeleteProduct(Product) returns (Response) {}
 }

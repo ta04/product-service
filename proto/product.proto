@@ -24,7 +24,7 @@ message DeleteProductRequest {
 
 // SingleJobResponse is a message for a single job response
 message SingleJobResponse {
-    Product createdProduct = 1;
+    Product product = 1;
     Error error = 2;
 }
 

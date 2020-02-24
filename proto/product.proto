@@ -4,7 +4,7 @@ syntax = "proto3";
 
 package product;
 
-// Product message
+// Product is a message for product
 message Product {
     int32 id = 1;
     string name = 2;
@@ -14,20 +14,26 @@ message Product {
     bool status = 6;
 }
 
-// GetAllProductsRequest message
+// GetAllProductsRequest is a message for requesting all products
 message GetAllProductsRequest {}
 
-// CreateProductsResponse message
-message CreateProductResponse {
+// DeleteProductRequest is a message for deleting a product
+message DeleteProductRequest {
+    int32 id = 1;
+}
+
+// SingleJobResponse is a message for a single job response
+message SingleJobResponse {
     Product createdProduct = 1;
     Error error = 2;
 }
 
-message GetAllProductsResponse {
+// MultipleJobResponse is a message for a multiple job response
+message MultipleJobResponse {
     repeated Product products = 1;
 }
 
-// Error message
+// Error is a message for errors
 message Error {
     string code = 1;
     string message = 2;
@@ -36,7 +42,9 @@ message Error {
 // ProductService service
 service ProductService {
     // Method to create a product
-    rpc CreateProduct(Product) returns (CreateProductResponse) {}
+    rpc CreateProduct(Product) returns (SingleJobResponse) {}
     // Method to get all products
-    rpc GetAllProducts(GetAllProductsRequest) returns (GetAllProductsResponse) {}
+    rpc GetAllProducts(GetAllProductsRequest) returns (MultipleJobResponse) {}
+    // Method to delete a product
+    rpc DeleteProduct(DeleteProductRequest) returns (SingleJobResponse) {}
 }

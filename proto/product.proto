@@ -14,8 +14,8 @@ message Product {
     bool status = 6;
 }
 
-// GetAllProductsRequest is a message for requesting all products
-message GetAllProductsRequest {}
+// IndexProductRequest is a message for requesting all products
+message IndexProductsRequest {}
 
 // Response is a message for a response
 message Response {
@@ -32,12 +32,18 @@ message Error {
 
 // ProductService service
 service ProductService {
-    // Method to create a product
-    rpc CreateProduct(Product) returns (Response) {}
-    // Method to get all products
-    rpc GetAllProducts(GetAllProductsRequest) returns (Response) {}
-    // Method to update a product
+    // Method to index all products
+    rpc IndexProducts(IndexProductsRequest) returns (Response) {}
+
+    // Method to show a product
+    rpc ShowProduct(Product) returns (Response) {}
+
+    // Method to store a new product
+    rpc StoreProduct(Product) returns (Response) {}
+
+    // Method to update a product's information
     rpc UpdateProduct(Product) returns (Response) {}
+
     // Method to delete a product
-    rpc DeleteProduct(Product) returns (Response) {}
+    rpc DestroyProduct(Product) returns (Response) {}
 }

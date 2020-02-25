@@ -104,37 +104,37 @@ func (m *Product) GetStatus() bool {
 	return false
 }
 
-// GetAllProductsRequest is a message for requesting all products
-type GetAllProductsRequest struct {
+// IndexProductRequest is a message for requesting all products
+type IndexProductsRequest struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *GetAllProductsRequest) Reset()         { *m = GetAllProductsRequest{} }
-func (m *GetAllProductsRequest) String() string { return proto.CompactTextString(m) }
-func (*GetAllProductsRequest) ProtoMessage()    {}
-func (*GetAllProductsRequest) Descriptor() ([]byte, []int) {
+func (m *IndexProductsRequest) Reset()         { *m = IndexProductsRequest{} }
+func (m *IndexProductsRequest) String() string { return proto.CompactTextString(m) }
+func (*IndexProductsRequest) ProtoMessage()    {}
+func (*IndexProductsRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_f0fd8b59378f44a5, []int{1}
 }
 
-func (m *GetAllProductsRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_GetAllProductsRequest.Unmarshal(m, b)
+func (m *IndexProductsRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_IndexProductsRequest.Unmarshal(m, b)
 }
-func (m *GetAllProductsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_GetAllProductsRequest.Marshal(b, m, deterministic)
+func (m *IndexProductsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_IndexProductsRequest.Marshal(b, m, deterministic)
 }
-func (m *GetAllProductsRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetAllProductsRequest.Merge(m, src)
+func (m *IndexProductsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_IndexProductsRequest.Merge(m, src)
 }
-func (m *GetAllProductsRequest) XXX_Size() int {
-	return xxx_messageInfo_GetAllProductsRequest.Size(m)
+func (m *IndexProductsRequest) XXX_Size() int {
+	return xxx_messageInfo_IndexProductsRequest.Size(m)
 }
-func (m *GetAllProductsRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetAllProductsRequest.DiscardUnknown(m)
+func (m *IndexProductsRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_IndexProductsRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_GetAllProductsRequest proto.InternalMessageInfo
+var xxx_messageInfo_IndexProductsRequest proto.InternalMessageInfo
 
 // Response is a message for a response
 type Response struct {
@@ -242,7 +242,7 @@ func (m *Error) GetMessage() string {
 
 func init() {
 	proto.RegisterType((*Product)(nil), "product.Product")
-	proto.RegisterType((*GetAllProductsRequest)(nil), "product.GetAllProductsRequest")
+	proto.RegisterType((*IndexProductsRequest)(nil), "product.IndexProductsRequest")
 	proto.RegisterType((*Response)(nil), "product.Response")
 	proto.RegisterType((*Error)(nil), "product.Error")
 }
@@ -250,28 +250,29 @@ func init() {
 func init() { proto.RegisterFile("product.proto", fileDescriptor_f0fd8b59378f44a5) }
 
 var fileDescriptor_f0fd8b59378f44a5 = []byte{
-	// 328 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x52, 0xcb, 0x4e, 0xc3, 0x30,
-	0x10, 0xc4, 0x6d, 0xd3, 0xc7, 0x56, 0x89, 0x60, 0xc5, 0xc3, 0xe2, 0x80, 0xa2, 0x88, 0x43, 0x84,
-	0x50, 0x0f, 0x45, 0xf4, 0x8e, 0xa0, 0xe2, 0x8a, 0x8c, 0xf8, 0x80, 0x90, 0xac, 0x50, 0xa4, 0xb6,
-	0x36, 0xb6, 0xc3, 0x47, 0xf0, 0x03, 0x7c, 0x2e, 0x28, 0xae, 0x1d, 0x81, 0xe8, 0xa5, 0xb7, 0x9d,
-	0xf5, 0xcc, 0xee, 0xce, 0x24, 0x10, 0x2b, 0x2d, 0xab, 0xa6, 0xb4, 0x33, 0xa5, 0xa5, 0x95, 0x38,
-	0xf2, 0x30, 0xfb, 0x62, 0x30, 0x7a, 0xda, 0xd6, 0x98, 0x40, 0xaf, 0xae, 0x38, 0x4b, 0x59, 0x1e,
-	0x89, 0x5e, 0x5d, 0x21, 0xc2, 0x60, 0x53, 0xac, 0x89, 0xf7, 0x52, 0x96, 0x4f, 0x84, 0xab, 0x31,
-	0x85, 0x69, 0x45, 0xa6, 0xd4, 0xb5, 0xb2, 0xb5, 0xdc, 0xf0, 0xbe, 0x7b, 0xfa, 0xdd, 0xc2, 0x63,
-	0x88, 0x94, 0xae, 0x4b, 0xe2, 0x83, 0x94, 0xe5, 0x4c, 0x6c, 0x01, 0x72, 0x18, 0xa9, 0xba, 0xb4,
-	0x8d, 0x26, 0x1e, 0x39, 0x4d, 0x80, 0x78, 0x0a, 0x43, 0x63, 0x0b, 0xdb, 0x18, 0x3e, 0x4c, 0x59,
-	0x3e, 0x16, 0x1e, 0x65, 0x67, 0x70, 0xf2, 0x48, 0xf6, 0x6e, 0xb5, 0xf2, 0xe7, 0x19, 0x41, 0xef,
-	0x0d, 0x19, 0x9b, 0x7d, 0x32, 0x18, 0x0b, 0x32, 0x4a, 0x6e, 0x0c, 0xe1, 0x15, 0x04, 0x2b, 0xee,
-	0xf0, 0xe9, 0xfc, 0x70, 0x16, 0x9c, 0x7a, 0x9d, 0x08, 0x04, 0xbc, 0x84, 0x88, 0xb4, 0x96, 0xda,
-	0x19, 0x9a, 0xce, 0x93, 0x8e, 0xb9, 0x6c, 0xbb, 0x62, 0xfb, 0x88, 0xd7, 0x30, 0xf6, 0x7d, 0xc3,
-	0xfb, 0x69, 0x7f, 0xe7, 0xc8, 0x8e, 0x91, 0xdd, 0x42, 0xe4, 0xd4, 0x6d, 0x58, 0xa5, 0xac, 0xc8,
-	0x5d, 0x31, 0x11, 0xae, 0x6e, 0x4d, 0xaf, 0xc9, 0x98, 0xe2, 0x2d, 0x64, 0x18, 0xe0, 0xfc, 0x9b,
-	0x41, 0xe2, 0x87, 0x3d, 0x93, 0xfe, 0x68, 0x13, 0x5a, 0x40, 0x7c, 0xaf, 0xa9, 0xb0, 0x14, 0x3e,
-	0xc7, 0xbf, 0xb5, 0xe7, 0x47, 0x5d, 0x27, 0xf8, 0xcf, 0x0e, 0x70, 0x09, 0xc9, 0xdf, 0x9c, 0xf0,
-	0xa2, 0xa3, 0xed, 0x0c, 0x70, 0xf7, 0x98, 0x05, 0xc4, 0x2f, 0xaa, 0xda, 0x7f, 0xfd, 0x02, 0xe2,
-	0x07, 0x5a, 0xd1, 0xbe, 0xba, 0xd7, 0xa1, 0xfb, 0x11, 0x6f, 0x7e, 0x02, 0x00, 0x00, 0xff, 0xff,
-	0x30, 0x37, 0x4d, 0x58, 0x99, 0x02, 0x00, 0x00,
+	// 341 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x52, 0x4b, 0x4e, 0xc3, 0x30,
+	0x10, 0xc5, 0x69, 0xd3, 0xcf, 0x84, 0x46, 0x60, 0x55, 0x95, 0x85, 0x84, 0x14, 0x45, 0x2c, 0x22,
+	0x84, 0xba, 0x28, 0x14, 0x0e, 0x00, 0x2c, 0xd8, 0x21, 0x57, 0x1c, 0x20, 0xc4, 0x23, 0xc8, 0xa2,
+	0xb1, 0xb1, 0x1d, 0x3e, 0x57, 0xe0, 0x02, 0x1c, 0x84, 0x0b, 0xa2, 0xb8, 0x71, 0x04, 0xa2, 0x9b,
+	0xee, 0xe6, 0xcd, 0xcc, 0x9b, 0xbc, 0xf7, 0x62, 0x98, 0x28, 0x2d, 0x45, 0x5d, 0xd8, 0xb9, 0xd2,
+	0xd2, 0x4a, 0x3a, 0x6c, 0x61, 0xfa, 0x45, 0x60, 0x78, 0xbf, 0xa9, 0x69, 0x0c, 0x41, 0x29, 0x18,
+	0x49, 0x48, 0x16, 0xf2, 0xa0, 0x14, 0x94, 0x42, 0xbf, 0xca, 0xd7, 0xc8, 0x82, 0x84, 0x64, 0x63,
+	0xee, 0x6a, 0x9a, 0x40, 0x24, 0xd0, 0x14, 0xba, 0x54, 0xb6, 0x94, 0x15, 0xeb, 0xb9, 0xd1, 0xef,
+	0x16, 0x9d, 0x42, 0xa8, 0x74, 0x59, 0x20, 0xeb, 0x27, 0x24, 0x23, 0x7c, 0x03, 0x28, 0x83, 0xa1,
+	0x2a, 0x0b, 0x5b, 0x6b, 0x64, 0xa1, 0xe3, 0x78, 0x48, 0x67, 0x30, 0x30, 0x36, 0xb7, 0xb5, 0x61,
+	0x83, 0x84, 0x64, 0x23, 0xde, 0xa2, 0x74, 0x06, 0xd3, 0xbb, 0x4a, 0xe0, 0x7b, 0xab, 0xce, 0x70,
+	0x7c, 0xa9, 0xd1, 0xd8, 0xf4, 0x93, 0xc0, 0x88, 0xa3, 0x51, 0xb2, 0x32, 0x48, 0x4f, 0xc1, 0x3b,
+	0x71, 0xba, 0xa3, 0xc5, 0xc1, 0xdc, 0x1b, 0x6d, 0x79, 0xdc, 0x2f, 0xd0, 0x13, 0x08, 0x51, 0x6b,
+	0xa9, 0x9d, 0x9f, 0x68, 0x11, 0x77, 0x9b, 0xb7, 0x4d, 0x97, 0x6f, 0x86, 0xf4, 0x0c, 0x46, 0x6d,
+	0xdf, 0xb0, 0x5e, 0xd2, 0xdb, 0x7a, 0xb2, 0xdb, 0x48, 0x97, 0x10, 0x3a, 0x76, 0x93, 0x55, 0x21,
+	0x05, 0x3a, 0x15, 0x63, 0xee, 0xea, 0xc6, 0xf3, 0x1a, 0x8d, 0xc9, 0x9f, 0x7c, 0x84, 0x1e, 0x2e,
+	0xbe, 0x03, 0x88, 0xdb, 0x63, 0x2b, 0xd4, 0xaf, 0x4d, 0x40, 0xd7, 0x30, 0xf9, 0x63, 0x97, 0x1e,
+	0x77, 0x9f, 0xdd, 0x16, 0xc3, 0xd1, 0x61, 0x37, 0xf6, 0x61, 0xa4, 0x7b, 0xf4, 0x02, 0xa2, 0xd5,
+	0xb3, 0x7c, 0xf3, 0x3f, 0xf4, 0x9f, 0xf2, 0xed, 0xac, 0x25, 0xec, 0xaf, 0xac, 0xd4, 0xb8, 0x23,
+	0xed, 0x12, 0x26, 0x0f, 0x4a, 0xe4, 0x76, 0x57, 0xde, 0x15, 0xc4, 0x37, 0x68, 0xac, 0x96, 0x1f,
+	0xbb, 0x11, 0x1f, 0x07, 0xee, 0xed, 0x9e, 0xff, 0x04, 0x00, 0x00, 0xff, 0xff, 0x62, 0x66, 0xd5,
+	0x83, 0xcc, 0x02, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -286,14 +287,16 @@ const _ = grpc.SupportPackageIsVersion6
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type ProductServiceClient interface {
-	// Method to create a product
-	CreateProduct(ctx context.Context, in *Product, opts ...grpc.CallOption) (*Response, error)
-	// Method to get all products
-	GetAllProducts(ctx context.Context, in *GetAllProductsRequest, opts ...grpc.CallOption) (*Response, error)
-	// Method to update a product
+	// Method to index all products
+	IndexProducts(ctx context.Context, in *IndexProductsRequest, opts ...grpc.CallOption) (*Response, error)
+	// Method to show a product
+	ShowProduct(ctx context.Context, in *Product, opts ...grpc.CallOption) (*Response, error)
+	// Method to store a new product
+	StoreProduct(ctx context.Context, in *Product, opts ...grpc.CallOption) (*Response, error)
+	// Method to update a product's information
 	UpdateProduct(ctx context.Context, in *Product, opts ...grpc.CallOption) (*Response, error)
 	// Method to delete a product
-	DeleteProduct(ctx context.Context, in *Product, opts ...grpc.CallOption) (*Response, error)
+	DestroyProduct(ctx context.Context, in *Product, opts ...grpc.CallOption) (*Response, error)
 }
 
 type productServiceClient struct {
@@ -304,18 +307,27 @@ func NewProductServiceClient(cc grpc.ClientConnInterface) ProductServiceClient {
 	return &productServiceClient{cc}
 }
 
-func (c *productServiceClient) CreateProduct(ctx context.Context, in *Product, opts ...grpc.CallOption) (*Response, error) {
+func (c *productServiceClient) IndexProducts(ctx context.Context, in *IndexProductsRequest, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
-	err := c.cc.Invoke(ctx, "/product.ProductService/CreateProduct", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/product.ProductService/IndexProducts", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *productServiceClient) GetAllProducts(ctx context.Context, in *GetAllProductsRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *productServiceClient) ShowProduct(ctx context.Context, in *Product, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
-	err := c.cc.Invoke(ctx, "/product.ProductService/GetAllProducts", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/product.ProductService/ShowProduct", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productServiceClient) StoreProduct(ctx context.Context, in *Product, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, "/product.ProductService/StoreProduct", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -331,9 +343,9 @@ func (c *productServiceClient) UpdateProduct(ctx context.Context, in *Product, o
 	return out, nil
 }
 
-func (c *productServiceClient) DeleteProduct(ctx context.Context, in *Product, opts ...grpc.CallOption) (*Response, error) {
+func (c *productServiceClient) DestroyProduct(ctx context.Context, in *Product, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
-	err := c.cc.Invoke(ctx, "/product.ProductService/DeleteProduct", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/product.ProductService/DestroyProduct", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -342,69 +354,92 @@ func (c *productServiceClient) DeleteProduct(ctx context.Context, in *Product, o
 
 // ProductServiceServer is the server API for ProductService service.
 type ProductServiceServer interface {
-	// Method to create a product
-	CreateProduct(context.Context, *Product) (*Response, error)
-	// Method to get all products
-	GetAllProducts(context.Context, *GetAllProductsRequest) (*Response, error)
-	// Method to update a product
+	// Method to index all products
+	IndexProducts(context.Context, *IndexProductsRequest) (*Response, error)
+	// Method to show a product
+	ShowProduct(context.Context, *Product) (*Response, error)
+	// Method to store a new product
+	StoreProduct(context.Context, *Product) (*Response, error)
+	// Method to update a product's information
 	UpdateProduct(context.Context, *Product) (*Response, error)
 	// Method to delete a product
-	DeleteProduct(context.Context, *Product) (*Response, error)
+	DestroyProduct(context.Context, *Product) (*Response, error)
 }
 
 // UnimplementedProductServiceServer can be embedded to have forward compatible implementations.
 type UnimplementedProductServiceServer struct {
 }
 
-func (*UnimplementedProductServiceServer) CreateProduct(ctx context.Context, req *Product) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateProduct not implemented")
+func (*UnimplementedProductServiceServer) IndexProducts(ctx context.Context, req *IndexProductsRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IndexProducts not implemented")
 }
-func (*UnimplementedProductServiceServer) GetAllProducts(ctx context.Context, req *GetAllProductsRequest) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAllProducts not implemented")
+func (*UnimplementedProductServiceServer) ShowProduct(ctx context.Context, req *Product) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ShowProduct not implemented")
+}
+func (*UnimplementedProductServiceServer) StoreProduct(ctx context.Context, req *Product) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StoreProduct not implemented")
 }
 func (*UnimplementedProductServiceServer) UpdateProduct(ctx context.Context, req *Product) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateProduct not implemented")
 }
-func (*UnimplementedProductServiceServer) DeleteProduct(ctx context.Context, req *Product) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteProduct not implemented")
+func (*UnimplementedProductServiceServer) DestroyProduct(ctx context.Context, req *Product) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DestroyProduct not implemented")
 }
 
 func RegisterProductServiceServer(s *grpc.Server, srv ProductServiceServer) {
 	s.RegisterService(&_ProductService_serviceDesc, srv)
 }
 
-func _ProductService_CreateProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _ProductService_IndexProducts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IndexProductsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServiceServer).IndexProducts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/product.ProductService/IndexProducts",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServiceServer).IndexProducts(ctx, req.(*IndexProductsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProductService_ShowProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Product)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ProductServiceServer).CreateProduct(ctx, in)
+		return srv.(ProductServiceServer).ShowProduct(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/product.ProductService/CreateProduct",
+		FullMethod: "/product.ProductService/ShowProduct",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProductServiceServer).CreateProduct(ctx, req.(*Product))
+		return srv.(ProductServiceServer).ShowProduct(ctx, req.(*Product))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ProductService_GetAllProducts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetAllProductsRequest)
+func _ProductService_StoreProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Product)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ProductServiceServer).GetAllProducts(ctx, in)
+		return srv.(ProductServiceServer).StoreProduct(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/product.ProductService/GetAllProducts",
+		FullMethod: "/product.ProductService/StoreProduct",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProductServiceServer).GetAllProducts(ctx, req.(*GetAllProductsRequest))
+		return srv.(ProductServiceServer).StoreProduct(ctx, req.(*Product))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -427,20 +462,20 @@ func _ProductService_UpdateProduct_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ProductService_DeleteProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _ProductService_DestroyProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Product)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ProductServiceServer).DeleteProduct(ctx, in)
+		return srv.(ProductServiceServer).DestroyProduct(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/product.ProductService/DeleteProduct",
+		FullMethod: "/product.ProductService/DestroyProduct",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProductServiceServer).DeleteProduct(ctx, req.(*Product))
+		return srv.(ProductServiceServer).DestroyProduct(ctx, req.(*Product))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -450,20 +485,24 @@ var _ProductService_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*ProductServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "CreateProduct",
-			Handler:    _ProductService_CreateProduct_Handler,
+			MethodName: "IndexProducts",
+			Handler:    _ProductService_IndexProducts_Handler,
 		},
 		{
-			MethodName: "GetAllProducts",
-			Handler:    _ProductService_GetAllProducts_Handler,
+			MethodName: "ShowProduct",
+			Handler:    _ProductService_ShowProduct_Handler,
+		},
+		{
+			MethodName: "StoreProduct",
+			Handler:    _ProductService_StoreProduct_Handler,
 		},
 		{
 			MethodName: "UpdateProduct",
 			Handler:    _ProductService_UpdateProduct_Handler,
 		},
 		{
-			MethodName: "DeleteProduct",
-			Handler:    _ProductService_DeleteProduct_Handler,
+			MethodName: "DestroyProduct",
+			Handler:    _ProductService_DestroyProduct_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

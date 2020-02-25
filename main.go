@@ -22,6 +22,7 @@ const (
 type repository interface {
 	Create(*pb.Product) (*pb.Product, error)
 	GetAll() ([]*pb.Product, error)
+	Update(*pb.Product) (*pb.Product, error)
 	Delete(*pb.Product) (*pb.Product, error)
 }
 
@@ -68,9 +69,19 @@ func (repo *Repository) GetAll() (products []*pb.Product, err error) {
 	return products, err
 }
 
+func (repo *Repository) Update(product *pb.Product) (*pb.Product, error) {
+	repo.mu.Lock()
+	query := fmt.Sprintf("UPDATE product SET name=%s, description=%s, price=%f, picture=%s, status=%t" +
+		"WHERE id=%d", product.Name, product.Description, product.Price, product.Picture, product.Status, product.Id)
+	_, err := repo.db.Exec(query)
+	repo.mu.Unlock()
+
+	return product, err
+}
+
 func (repo *Repository) Delete(product *pb.Product) (*pb.Product, error) {
 	repo.mu.Lock()
-	query := fmt.Sprintf("DELETE FROM product WHERE product.id=%d", product.Id)
+	query := fmt.Sprintf("DELETE FROM product WHERE id=%d", product.Id)
 	_, err := repo.db.Exec(query)
 	repo.mu.Unlock()
 
@@ -100,6 +111,18 @@ func (s *service) GetAllProducts(ctx context.Context, req *pb.GetAllProductsRequ
 	return &pb.Response{
 		Products: products,
 	}, err
+}
+
+func (s *service) UpdateProduct(ctx context.Context, req *pb.Product) (*pb.Response, error) {
+	product, err := s.repo.Update(req)
+	if err != nil {
+		return nil, err
+	}
+	
+	return &pb.Response{
+		Product: product,
+		Error:   nil,
+	}, nil
 }
 
 func (s *service) DeleteProduct(ctx context.Context, req *pb.Product) (*pb.Response, error) {

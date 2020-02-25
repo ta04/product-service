@@ -36,6 +36,8 @@ service ProductService {
     rpc CreateProduct(Product) returns (Response) {}
     // Method to get all products
     rpc GetAllProducts(GetAllProductsRequest) returns (Response) {}
+    // Method to update a product
+    rpc UpdateProduct(Product) returns (Response) {}
     // Method to delete a product
     rpc DeleteProduct(Product) returns (Response) {}
 }

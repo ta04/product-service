@@ -20,10 +20,11 @@ const (
 )
 
 type repository interface {
-	Create(*pb.Product) (*pb.Product, error)
-	GetAll() ([]*pb.Product, error)
+	Index() ([]*pb.Product, error)
+	Show(*pb.Product) (*pb.Product, error)
+	Store(*pb.Product) (*pb.Product, error)
 	Update(*pb.Product) (*pb.Product, error)
-	Delete(*pb.Product) (*pb.Product, error)
+	Destroy(*pb.Product) (*pb.Product, error)
 }
 
 type Repository struct {
@@ -31,17 +32,7 @@ type Repository struct {
 	db *sql.DB
 }
 
-func (repo *Repository) Create(product *pb.Product) (*pb.Product, error) {
-	repo.mu.Lock()
-	query := fmt.Sprintf("INSERT INTO product (name, description, price, picture, status)"+
-		"VALUES ('%s', '%s', %f, '%s', %t)", product.Name, product.Description, product.Price, product.Picture, product.Status)
-	_, err := repo.db.Exec(query)
-	repo.mu.Unlock()
-
-	return product, err
-}
-
-func (repo *Repository) GetAll() (products []*pb.Product, err error) {
+func (repo *Repository) Index() (products []*pb.Product, err error) {
 	var id int32
 	var name, description, picture string
 	var price float64
@@ -49,6 +40,9 @@ func (repo *Repository) GetAll() (products []*pb.Product, err error) {
 
 	query := "SELECT * FROM product"
 	rows, err := repo.db.Query(query)
+	if err != nil {
+		return nil, err
+	}
 
 	for rows.Next() {
 		err := rows.Scan(&id, &name, &description, &price, &picture, &status)
@@ -69,6 +63,38 @@ func (repo *Repository) GetAll() (products []*pb.Product, err error) {
 	return products, err
 }
 
+func (repo *Repository) Show(product *pb.Product) (*pb.Product, error) {
+	var id int32
+	var name, description, picture string
+	var price float64
+	var status bool
+
+	query := fmt.Sprintf("SELECT * FROM product WHERE id=%d", product.Id)
+	err := repo.db.QueryRow(query).Scan(&id, &name, &description, &price, &picture, &status)
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.Product{
+		Id:          id,
+		Name:        name,
+		Description: description,
+		Picture:     picture,
+		Price:       price,
+		Status:      status,
+	}, err
+}
+
+func (repo *Repository) Store(product *pb.Product) (*pb.Product, error) {
+	repo.mu.Lock()
+	query := fmt.Sprintf("INSERT INTO product (name, description, price, picture, status)"+
+		"VALUES ('%s', '%s', %f, '%s', %t)", product.Name, product.Description, product.Price, product.Picture, product.Status)
+	_, err := repo.db.Exec(query)
+	repo.mu.Unlock()
+
+	return product, err
+}
+
 func (repo *Repository) Update(product *pb.Product) (*pb.Product, error) {
 	repo.mu.Lock()
 	query := fmt.Sprintf("UPDATE product SET name=%s, description=%s, price=%f, picture=%s, status=%t" +
@@ -79,7 +105,7 @@ func (repo *Repository) Update(product *pb.Product) (*pb.Product, error) {
 	return product, err
 }
 
-func (repo *Repository) Delete(product *pb.Product) (*pb.Product, error) {
+func (repo *Repository) Destroy(product *pb.Product) (*pb.Product, error) {
 	repo.mu.Lock()
 	query := fmt.Sprintf("DELETE FROM product WHERE id=%d", product.Id)
 	_, err := repo.db.Exec(query)
@@ -93,8 +119,29 @@ type service struct {
 	repo repository
 }
 
-func (s *service) CreateProduct(ctx context.Context, req *pb.Product) (*pb.Response, error) {
-	product, err := s.repo.Create(req)
+func (s *service) IndexProducts(ctx context.Context, req *pb.IndexProductsRequest) (*pb.Response, error) {
+	products, err := s.repo.Index()
+
+	return &pb.Response{
+		Products: products,
+		Error: nil,
+	}, err
+}
+
+func (s *service) ShowProduct(ctx context.Context, req *pb.Product) (*pb.Response, error) {
+	product, err := s.repo.Show(req)
+	if err != nil {
+		return nil, err
+	}
+	
+	return &pb.Response{
+		Product: product,
+		Error:   nil,
+	}, nil
+}
+
+func (s *service) StoreProduct(ctx context.Context, req *pb.Product) (*pb.Response, error) {
+	product, err := s.repo.Store(req)
 	if err != nil {
 		return nil, err
 	}
@@ -102,14 +149,6 @@ func (s *service) CreateProduct(ctx context.Context, req *pb.Product) (*pb.Respo
 	return &pb.Response{
 		Product: product,
 		Error:   nil,
-	}, err
-}
-
-func (s *service) GetAllProducts(ctx context.Context, req *pb.GetAllProductsRequest) (*pb.Response, error) {
-	products, err := s.repo.GetAll()
-
-	return &pb.Response{
-		Products: products,
 	}, err
 }
 
@@ -125,8 +164,8 @@ func (s *service) UpdateProduct(ctx context.Context, req *pb.Product) (*pb.Respo
 	}, nil
 }
 
-func (s *service) DeleteProduct(ctx context.Context, req *pb.Product) (*pb.Response, error) {
-	product, err := s.repo.Delete(req)
+func (s *service) DestroyProduct(ctx context.Context, req *pb.Product) (*pb.Response, error) {
+	product, err := s.repo.Destroy(req)
 	if err != nil {
 		return nil, err
 	}

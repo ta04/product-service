@@ -97,7 +97,7 @@ func (repo *Repository) Store(product *pb.Product) (*pb.Product, error) {
 
 func (repo *Repository) Update(product *pb.Product) (*pb.Product, error) {
 	repo.mu.Lock()
-	query := fmt.Sprintf("UPDATE product SET name=%s, description=%s, price=%f, picture=%s, status=%t" +
+	query := fmt.Sprintf("UPDATE product SET name=%s, description=%s, price=%f, picture=%s, status=%t"+
 		"WHERE id=%d", product.Name, product.Description, product.Price, product.Picture, product.Status, product.Id)
 	_, err := repo.db.Exec(query)
 	repo.mu.Unlock()
@@ -124,7 +124,7 @@ func (s *service) IndexProducts(ctx context.Context, req *pb.IndexProductsReques
 
 	return &pb.Response{
 		Products: products,
-		Error: nil,
+		Error:    nil,
 	}, err
 }
 
@@ -133,7 +133,7 @@ func (s *service) ShowProduct(ctx context.Context, req *pb.Product) (*pb.Respons
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return &pb.Response{
 		Product: product,
 		Error:   nil,
@@ -157,7 +157,7 @@ func (s *service) UpdateProduct(ctx context.Context, req *pb.Product) (*pb.Respo
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return &pb.Response{
 		Product: product,
 		Error:   nil,
@@ -202,7 +202,7 @@ func main() {
 
 	reflection.Register(s)
 
-	log.Println("Running on port:", port)
+	log.Println("running on port", port)
 	err = s.Serve(listen)
 	if err != nil {
 		log.Fatalf("failed to serve: %v", err)

@@ -88,7 +88,7 @@ func (repo *Repository) Show(product *pb.Product) (*pb.Product, error) {
 func (repo *Repository) Store(product *pb.Product) (*pb.Product, error) {
 	repo.mu.Lock()
 	query := fmt.Sprintf("INSERT INTO product (name, description, price, picture, status)"+
-		"VALUES ('%s', '%s', %f, '%s', %t)", product.Name, product.Description, product.Price, product.Picture, product.Status)
+		" VALUES ('%s', '%s', %f, '%s', %t)", product.Name, product.Description, product.Price, product.Picture, product.Status)
 	_, err := repo.db.Exec(query)
 	repo.mu.Unlock()
 
@@ -97,8 +97,8 @@ func (repo *Repository) Store(product *pb.Product) (*pb.Product, error) {
 
 func (repo *Repository) Update(product *pb.Product) (*pb.Product, error) {
 	repo.mu.Lock()
-	query := fmt.Sprintf("UPDATE product SET name=%s, description=%s, price=%f, picture=%s, status=%t"+
-		"WHERE id=%d", product.Name, product.Description, product.Price, product.Picture, product.Status, product.Id)
+	query := fmt.Sprintf("UPDATE product SET name = '%s', description = '%s', price = %f, picture = '%s', status = %t"+
+		" WHERE id = %d", product.Name, product.Description, product.Price, product.Picture, product.Status, product.Id)
 	_, err := repo.db.Exec(query)
 	repo.mu.Unlock()
 

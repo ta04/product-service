@@ -4,13 +4,15 @@
 package product
 
 import (
-	context "context"
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
-	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 	math "math"
+)
+
+import (
+	client "github.com/micro/go-micro/client"
+	server "github.com/micro/go-micro/server"
+	context "golang.org/x/net/context"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -247,7 +249,9 @@ func init() {
 	proto.RegisterType((*Error)(nil), "product.Error")
 }
 
-func init() { proto.RegisterFile("product.proto", fileDescriptor_f0fd8b59378f44a5) }
+func init() {
+	proto.RegisterFile("product.proto", fileDescriptor_f0fd8b59378f44a5)
+}
 
 var fileDescriptor_f0fd8b59378f44a5 = []byte{
 	// 341 bytes of a gzipped FileDescriptorProto
@@ -277,234 +281,131 @@ var fileDescriptor_f0fd8b59378f44a5 = []byte{
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ context.Context
-var _ grpc.ClientConnInterface
+var _ client.Option
+var _ server.Option
 
-// This is a compile-time assertion to ensure that this generated file
-// is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion6
+// Client API for ProductService service
 
-// ProductServiceClient is the client API for ProductService service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type ProductServiceClient interface {
 	// Method to index all products
-	IndexProducts(ctx context.Context, in *IndexProductsRequest, opts ...grpc.CallOption) (*Response, error)
+	IndexProducts(ctx context.Context, in *IndexProductsRequest, opts ...client.CallOption) (*Response, error)
 	// Method to show a product
-	ShowProduct(ctx context.Context, in *Product, opts ...grpc.CallOption) (*Response, error)
+	ShowProduct(ctx context.Context, in *Product, opts ...client.CallOption) (*Response, error)
 	// Method to store a new product
-	StoreProduct(ctx context.Context, in *Product, opts ...grpc.CallOption) (*Response, error)
+	StoreProduct(ctx context.Context, in *Product, opts ...client.CallOption) (*Response, error)
 	// Method to update a product's information
-	UpdateProduct(ctx context.Context, in *Product, opts ...grpc.CallOption) (*Response, error)
+	UpdateProduct(ctx context.Context, in *Product, opts ...client.CallOption) (*Response, error)
 	// Method to delete a product
-	DestroyProduct(ctx context.Context, in *Product, opts ...grpc.CallOption) (*Response, error)
+	DestroyProduct(ctx context.Context, in *Product, opts ...client.CallOption) (*Response, error)
 }
 
 type productServiceClient struct {
-	cc grpc.ClientConnInterface
+	c           client.Client
+	serviceName string
 }
 
-func NewProductServiceClient(cc grpc.ClientConnInterface) ProductServiceClient {
-	return &productServiceClient{cc}
+func NewProductServiceClient(serviceName string, c client.Client) ProductServiceClient {
+	if c == nil {
+		c = client.NewClient()
+	}
+	if len(serviceName) == 0 {
+		serviceName = "product"
+	}
+	return &productServiceClient{
+		c:           c,
+		serviceName: serviceName,
+	}
 }
 
-func (c *productServiceClient) IndexProducts(ctx context.Context, in *IndexProductsRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *productServiceClient) IndexProducts(ctx context.Context, in *IndexProductsRequest, opts ...client.CallOption) (*Response, error) {
+	req := c.c.NewRequest(c.serviceName, "ProductService.IndexProducts", in)
 	out := new(Response)
-	err := c.cc.Invoke(ctx, "/product.ProductService/IndexProducts", in, out, opts...)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *productServiceClient) ShowProduct(ctx context.Context, in *Product, opts ...grpc.CallOption) (*Response, error) {
+func (c *productServiceClient) ShowProduct(ctx context.Context, in *Product, opts ...client.CallOption) (*Response, error) {
+	req := c.c.NewRequest(c.serviceName, "ProductService.ShowProduct", in)
 	out := new(Response)
-	err := c.cc.Invoke(ctx, "/product.ProductService/ShowProduct", in, out, opts...)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *productServiceClient) StoreProduct(ctx context.Context, in *Product, opts ...grpc.CallOption) (*Response, error) {
+func (c *productServiceClient) StoreProduct(ctx context.Context, in *Product, opts ...client.CallOption) (*Response, error) {
+	req := c.c.NewRequest(c.serviceName, "ProductService.StoreProduct", in)
 	out := new(Response)
-	err := c.cc.Invoke(ctx, "/product.ProductService/StoreProduct", in, out, opts...)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *productServiceClient) UpdateProduct(ctx context.Context, in *Product, opts ...grpc.CallOption) (*Response, error) {
+func (c *productServiceClient) UpdateProduct(ctx context.Context, in *Product, opts ...client.CallOption) (*Response, error) {
+	req := c.c.NewRequest(c.serviceName, "ProductService.UpdateProduct", in)
 	out := new(Response)
-	err := c.cc.Invoke(ctx, "/product.ProductService/UpdateProduct", in, out, opts...)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *productServiceClient) DestroyProduct(ctx context.Context, in *Product, opts ...grpc.CallOption) (*Response, error) {
+func (c *productServiceClient) DestroyProduct(ctx context.Context, in *Product, opts ...client.CallOption) (*Response, error) {
+	req := c.c.NewRequest(c.serviceName, "ProductService.DestroyProduct", in)
 	out := new(Response)
-	err := c.cc.Invoke(ctx, "/product.ProductService/DestroyProduct", in, out, opts...)
+	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// ProductServiceServer is the server API for ProductService service.
-type ProductServiceServer interface {
+// Server API for ProductService service
+
+type ProductServiceHandler interface {
 	// Method to index all products
-	IndexProducts(context.Context, *IndexProductsRequest) (*Response, error)
+	IndexProducts(context.Context, *IndexProductsRequest, *Response) error
 	// Method to show a product
-	ShowProduct(context.Context, *Product) (*Response, error)
+	ShowProduct(context.Context, *Product, *Response) error
 	// Method to store a new product
-	StoreProduct(context.Context, *Product) (*Response, error)
+	StoreProduct(context.Context, *Product, *Response) error
 	// Method to update a product's information
-	UpdateProduct(context.Context, *Product) (*Response, error)
+	UpdateProduct(context.Context, *Product, *Response) error
 	// Method to delete a product
-	DestroyProduct(context.Context, *Product) (*Response, error)
+	DestroyProduct(context.Context, *Product, *Response) error
 }
 
-// UnimplementedProductServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedProductServiceServer struct {
+func RegisterProductServiceHandler(s server.Server, hdlr ProductServiceHandler, opts ...server.HandlerOption) {
+	s.Handle(s.NewHandler(&ProductService{hdlr}, opts...))
 }
 
-func (*UnimplementedProductServiceServer) IndexProducts(ctx context.Context, req *IndexProductsRequest) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method IndexProducts not implemented")
-}
-func (*UnimplementedProductServiceServer) ShowProduct(ctx context.Context, req *Product) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ShowProduct not implemented")
-}
-func (*UnimplementedProductServiceServer) StoreProduct(ctx context.Context, req *Product) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method StoreProduct not implemented")
-}
-func (*UnimplementedProductServiceServer) UpdateProduct(ctx context.Context, req *Product) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateProduct not implemented")
-}
-func (*UnimplementedProductServiceServer) DestroyProduct(ctx context.Context, req *Product) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DestroyProduct not implemented")
+type ProductService struct {
+	ProductServiceHandler
 }
 
-func RegisterProductServiceServer(s *grpc.Server, srv ProductServiceServer) {
-	s.RegisterService(&_ProductService_serviceDesc, srv)
+func (h *ProductService) IndexProducts(ctx context.Context, in *IndexProductsRequest, out *Response) error {
+	return h.ProductServiceHandler.IndexProducts(ctx, in, out)
 }
 
-func _ProductService_IndexProducts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IndexProductsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProductServiceServer).IndexProducts(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/product.ProductService/IndexProducts",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProductServiceServer).IndexProducts(ctx, req.(*IndexProductsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+func (h *ProductService) ShowProduct(ctx context.Context, in *Product, out *Response) error {
+	return h.ProductServiceHandler.ShowProduct(ctx, in, out)
 }
 
-func _ProductService_ShowProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Product)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProductServiceServer).ShowProduct(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/product.ProductService/ShowProduct",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProductServiceServer).ShowProduct(ctx, req.(*Product))
-	}
-	return interceptor(ctx, in, info, handler)
+func (h *ProductService) StoreProduct(ctx context.Context, in *Product, out *Response) error {
+	return h.ProductServiceHandler.StoreProduct(ctx, in, out)
 }
 
-func _ProductService_StoreProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Product)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProductServiceServer).StoreProduct(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/product.ProductService/StoreProduct",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProductServiceServer).StoreProduct(ctx, req.(*Product))
-	}
-	return interceptor(ctx, in, info, handler)
+func (h *ProductService) UpdateProduct(ctx context.Context, in *Product, out *Response) error {
+	return h.ProductServiceHandler.UpdateProduct(ctx, in, out)
 }
 
-func _ProductService_UpdateProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Product)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProductServiceServer).UpdateProduct(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/product.ProductService/UpdateProduct",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProductServiceServer).UpdateProduct(ctx, req.(*Product))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ProductService_DestroyProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Product)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProductServiceServer).DestroyProduct(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/product.ProductService/DestroyProduct",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProductServiceServer).DestroyProduct(ctx, req.(*Product))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-var _ProductService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "product.ProductService",
-	HandlerType: (*ProductServiceServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "IndexProducts",
-			Handler:    _ProductService_IndexProducts_Handler,
-		},
-		{
-			MethodName: "ShowProduct",
-			Handler:    _ProductService_ShowProduct_Handler,
-		},
-		{
-			MethodName: "StoreProduct",
-			Handler:    _ProductService_StoreProduct_Handler,
-		},
-		{
-			MethodName: "UpdateProduct",
-			Handler:    _ProductService_UpdateProduct_Handler,
-		},
-		{
-			MethodName: "DestroyProduct",
-			Handler:    _ProductService_DestroyProduct_Handler,
-		},
-	},
-	Streams:  []grpc.StreamDesc{},
-	Metadata: "product.proto",
+func (h *ProductService) DestroyProduct(ctx context.Context, in *Product, out *Response) error {
+	return h.ProductServiceHandler.DestroyProduct(ctx, in, out)
 }

@@ -8,11 +8,8 @@ import (
 	"fmt"
 	pb "github.com/SleepingNext/product-service/proto"
 	_ "github.com/lib/pq"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
+	"github.com/micro/go-micro"
 	"log"
-	"net"
-	"sync"
 )
 
 const (
@@ -28,7 +25,6 @@ type repository interface {
 }
 
 type Repository struct {
-	mu sync.RWMutex
 	db *sql.DB
 }
 
@@ -86,30 +82,24 @@ func (repo *Repository) Show(product *pb.Product) (*pb.Product, error) {
 }
 
 func (repo *Repository) Store(product *pb.Product) (*pb.Product, error) {
-	repo.mu.Lock()
 	query := fmt.Sprintf("INSERT INTO product (name, description, price, picture, status)"+
 		" VALUES ('%s', '%s', %f, '%s', %t)", product.Name, product.Description, product.Price, product.Picture, product.Status)
 	_, err := repo.db.Exec(query)
-	repo.mu.Unlock()
 
 	return product, err
 }
 
 func (repo *Repository) Update(product *pb.Product) (*pb.Product, error) {
-	repo.mu.Lock()
 	query := fmt.Sprintf("UPDATE product SET name = '%s', description = '%s', price = %f, picture = '%s', status = %t"+
 		" WHERE id = %d", product.Name, product.Description, product.Price, product.Picture, product.Status, product.Id)
 	_, err := repo.db.Exec(query)
-	repo.mu.Unlock()
 
 	return product, err
 }
 
 func (repo *Repository) Destroy(product *pb.Product) (*pb.Product, error) {
-	repo.mu.Lock()
 	query := fmt.Sprintf("DELETE FROM product WHERE id=%d", product.Id)
 	_, err := repo.db.Exec(query)
-	repo.mu.Unlock()
 
 	return product, err
 
@@ -119,61 +109,64 @@ type service struct {
 	repo repository
 }
 
-func (s *service) IndexProducts(ctx context.Context, req *pb.IndexProductsRequest) (*pb.Response, error) {
+func (s *service) IndexProducts(ctx context.Context, req *pb.IndexProductsRequest, res *pb.Response) error {
 	products, err := s.repo.Index()
+	if err != nil {
+		return err
+	}
 
-	return &pb.Response{
-		Products: products,
-		Error:    nil,
-	}, err
+	res.Products = products
+	res.Error = nil
+
+	return err
 }
 
-func (s *service) ShowProduct(ctx context.Context, req *pb.Product) (*pb.Response, error) {
+func (s *service) ShowProduct(ctx context.Context, req *pb.Product, res *pb.Response) error {
 	product, err := s.repo.Show(req)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return &pb.Response{
-		Product: product,
-		Error:   nil,
-	}, nil
+	res.Product = product
+	res.Error =   nil
+
+	return nil
 }
 
-func (s *service) StoreProduct(ctx context.Context, req *pb.Product) (*pb.Response, error) {
+func (s *service) StoreProduct(ctx context.Context, req *pb.Product, res *pb.Response) error {
 	product, err := s.repo.Store(req)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return &pb.Response{
-		Product: product,
-		Error:   nil,
-	}, err
+	res.Product = product
+	res.Error =   nil
+
+	return err
 }
 
-func (s *service) UpdateProduct(ctx context.Context, req *pb.Product) (*pb.Response, error) {
+func (s *service) UpdateProduct(ctx context.Context, req *pb.Product, res *pb.Response) error {
 	product, err := s.repo.Update(req)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return &pb.Response{
-		Product: product,
-		Error:   nil,
-	}, nil
+	res.Product = product
+	res.Error =   nil
+
+	return nil
 }
 
-func (s *service) DestroyProduct(ctx context.Context, req *pb.Product) (*pb.Response, error) {
+func (s *service) DestroyProduct(ctx context.Context, req *pb.Product, res *pb.Response) error {
 	product, err := s.repo.Destroy(req)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return &pb.Response{
-		Product: product,
-		Error:   nil,
-	}, err
+	res.Product = product
+	res.Error =   nil
+
+	return err
 }
 
 func connectPostgres() (*sql.DB, error) {
@@ -184,27 +177,24 @@ func connectPostgres() (*sql.DB, error) {
 }
 
 func main() {
+	// Connect to Postgres
 	db, err := connectPostgres()
-	repo := &Repository{}
-	repo.db = db
-
 	if err != nil {
 		log.Fatalf("failed to connect to postgres: %v", err)
 	}
+	repo := &Repository{}
+	repo.db = db
 
-	listen, err := net.Listen("tcp", port)
+	s := micro.NewService(micro.Name("product.service"))
+
+	s.Init()
+
+	// Register the handler
+	pb.RegisterProductServiceHandler(s.Server(), &service{repo})
+
+	// Run the server
+	err = s.Run()
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
-	}
-	s := grpc.NewServer()
-
-	pb.RegisterProductServiceServer(s, &service{repo})
-
-	reflection.Register(s)
-
-	log.Println("running on port", port)
-	err = s.Serve(listen)
-	if err != nil {
-		log.Fatalf("failed to serve: %v", err)
+		fmt.Println(err)
 	}
 }

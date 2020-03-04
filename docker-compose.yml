@@ -1,8 +1,10 @@
+# product-service/docker-compose.yml
+
 version: '3.3'
 services:
   product-service:
     restart: always
-    command: ["./product-service"]
+    entrypoint: ["./product-service"]
     container_name: "product-service"
     build: .
     ports:
@@ -15,7 +17,8 @@ services:
       - product-service-tier
       - backend-tier
     environment:
-      MICRO_ADDRESS: ":50051"
+      MICRO_SERVER_ADDRESS: ":50051"
+      MICRO_REGISTRY: mdns
 
   database:
     image: postgres:latest

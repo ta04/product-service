@@ -1,18 +1,26 @@
+// product-service/handler/handler.go
+
 package handler
 
 import (
 	"context"
-	pb "github.com/SleepingNext/product-service/proto"
-	"github.com/SleepingNext/product-service/repository"
+
+	productPB "github.com/SleepingNext/product-service/proto"
+	productRepo "github.com/SleepingNext/product-service/repository"
 )
 
-type Handler struct {
-	Repo repository.Repository
-	ProductClient pb.ProductServiceClient
+type handler struct {
+	repository productRepo.Repository
 }
 
-func (h *Handler) IndexProducts(ctx context.Context, req *pb.IndexProductsRequest, res *pb.Response) error {
-	products, err := h.Repo.Index()
+func NewHandler(repo productRepo.Repository) *handler {
+	return &handler{
+		repository: repo,
+	}
+}
+
+func (h *handler) IndexProducts(ctx context.Context, req *productPB.IndexProductsRequest, res *productPB.Response) error {
+	products, err := h.repository.Index()
 	if err != nil {
 		return err
 	}
@@ -23,50 +31,50 @@ func (h *Handler) IndexProducts(ctx context.Context, req *pb.IndexProductsReques
 	return err
 }
 
-func (h *Handler) ShowProduct(ctx context.Context, req *pb.Product, res *pb.Response) error {
-	product, err := h.Repo.Show(req)
+func (h *handler) ShowProduct(ctx context.Context, req *productPB.Product, res *productPB.Response) error {
+	product, err := h.repository.Show(req)
 	if err != nil {
 		return err
 	}
 
 	res.Product = product
-	res.Error =   nil
+	res.Error = nil
 
 	return nil
 }
 
-func (h *Handler) StoreProduct(ctx context.Context, req *pb.Product, res *pb.Response) error {
-	product, err := h.Repo.Store(req)
+func (h *handler) StoreProduct(ctx context.Context, req *productPB.Product, res *productPB.Response) error {
+	product, err := h.repository.Store(req)
 	if err != nil {
 		return err
 	}
 
 	res.Product = product
-	res.Error =   nil
+	res.Error = nil
 
 	return err
 }
 
-func (h *Handler) UpdateProduct(ctx context.Context, req *pb.Product, res *pb.Response) error {
-	product, err := h.Repo.Update(req)
+func (h *handler) UpdateProduct(ctx context.Context, req *productPB.Product, res *productPB.Response) error {
+	product, err := h.repository.Update(req)
 	if err != nil {
 		return err
 	}
 
 	res.Product = product
-	res.Error =   nil
+	res.Error = nil
 
 	return nil
 }
 
-func (h *Handler) DestroyProduct(ctx context.Context, req *pb.Product, res *pb.Response) error {
-	product, err := h.Repo.Destroy(req)
+func (h *handler) DestroyProduct(ctx context.Context, req *productPB.Product, res *productPB.Response) error {
+	product, err := h.repository.Destroy(req)
 	if err != nil {
 		return err
 	}
 
 	res.Product = product
-	res.Error =   nil
+	res.Error = nil
 
 	return err
 }

@@ -1,8 +1,8 @@
-// product-service/proto/product/product.proto
+// product-service/proto/product.proto
 
 syntax = "proto3";
 
-package product;
+package com.ta04.srv.product;
 
 // Product is a message for product
 message Product {
@@ -14,36 +14,36 @@ message Product {
     bool status = 6;
 }
 
-// IndexProductRequest is a message for requesting all products
+// IndexProductRequest is a message for IndexProducts
 message IndexProductsRequest {}
 
-// Response is a message for a response
+// Response is a response message
 message Response {
     Product product = 1;
     Error error = 2;
     repeated Product products = 3;
 }
 
-// Error is a message for errors
+// Error is an error message
 message Error {
     string code = 1;
     string message = 2;
 }
 
-// ProductService service
+// ProductService is a service for product-service
 service ProductService {
-    // Method to index all products
+    // IndexProduct is a method to index all products
     rpc IndexProducts(IndexProductsRequest) returns (Response) {}
 
-    // Method to show a product
+    // ShowProduct is a method to show a product
     rpc ShowProduct(Product) returns (Response) {}
 
-    // Method to store a new product
+    // StoreProduct is a method to store a new product
     rpc StoreProduct(Product) returns (Response) {}
 
-    // Method to update a product's information
+    // UpdateProduct is a method to update a product
     rpc UpdateProduct(Product) returns (Response) {}
 
-    // Method to delete a product
+    // DestroyProduct is a method to delete a product
     rpc DestroyProduct(Product) returns (Response) {}
 }

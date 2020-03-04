@@ -1,3 +1,6 @@
+# product-service/Dockerfile
+
+# Build the product-service
 FROM golang:alpine AS build
 
 RUN apk update && apk upgrade && apk add --no-cache git
@@ -12,7 +15,7 @@ COPY . .
 RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o product-service
 
-# Run container
+# Copy the newly built product-service to Alpine container
 FROM alpine:latest
 
 RUN apk add --no-cache ca-certificates

@@ -4,41 +4,40 @@ package main
 
 import (
 	"fmt"
-	"github.com/SleepingNext/product-service/datastore"
+	"log"
+
+	"github.com/SleepingNext/product-service/database"
 	"github.com/SleepingNext/product-service/handler"
-	pb "github.com/SleepingNext/product-service/proto"
-	"github.com/SleepingNext/product-service/repository"
+	productPB "github.com/SleepingNext/product-service/proto"
+	"github.com/SleepingNext/product-service/repository/postgres"
 	_ "github.com/lib/pq"
 	"github.com/micro/go-micro"
-	"log"
 )
 
 func main() {
-	// Setup the micro instance
+	// Create a new service
 	s := micro.NewService(
-		micro.Name("product.service"),
+		micro.Name("com.ta04.srv.product"),
 	)
+
+	// Initialize the service
 	s.Init()
 
-	// Connect to Postgres
-	db, err := datastore.ConnectPostgres()
+	// Connect to postgres
+	db, err := database.OpenPostgresConnection()
 	if err != nil {
 		log.Fatalf("failed to connect to postgres: %v", err)
 	}
 
-	// Initialize the handler
-	repo := &repository.PostgresRepository{}
-	repo.DB = db
-	productClient := pb.NewProductServiceClient("product.service.client", s.Client())
-	h := &handler.Handler{
-		Repo: repo,
-		ProductClient: productClient,
-	}
+	// Create a new handler
+	h := handler.NewHandler(&postgres.Repository{
+		DB: db,
+	})
 
 	// Register the handler
-	pb.RegisterProductServiceHandler(s.Server(), h)
+	productPB.RegisterProductServiceHandler(s.Server(), h)
 
-	// Run the server
+	// Run the service
 	err = s.Run()
 	if err != nil {
 		fmt.Println(err)

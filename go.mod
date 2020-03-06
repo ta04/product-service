@@ -4,10 +4,10 @@ go 1.13
 
 require (
 	github.com/golang/protobuf v1.3.4
-	github.com/google/btree v1.0.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.9.5 // indirect
 	github.com/lib/pq v1.3.0
 	github.com/micro/go-micro v1.18.0
+	github.com/micro/go-plugins v1.5.1 // indirect
 	github.com/nats-io/nats-server/v2 v2.1.2 // indirect
 	github.com/prometheus/client_golang v1.3.0 // indirect
 	go.uber.org/zap v1.13.0 // indirect

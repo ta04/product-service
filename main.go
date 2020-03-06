@@ -28,6 +28,12 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to connect to postgres: %v", err)
 	}
+	defer db.Close()
+
+	err = db.Ping()
+	if err != nil {
+		panic(err)
+	}
 
 	// Create a new handler
 	h := handler.NewHandler(&postgres.Repository{

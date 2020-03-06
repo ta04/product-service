@@ -32,7 +32,7 @@ message Error {
 
 // ProductService is a service for product-service
 service ProductService {
-    // IndexProduct is a method to index all products
+    // IndexProducts is a method to index all products
     rpc IndexProducts(IndexProductsRequest) returns (Response) {}
 
     // ShowProduct is a method to show a product

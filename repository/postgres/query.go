@@ -3,10 +3,15 @@
 package postgres
 
 import (
+	"database/sql"
 	"fmt"
 
 	productPB "github.com/SleepingNext/product-service/proto"
 )
+
+type Repository struct {
+	DB *sql.DB
+}
 
 func (repo *Repository) Index() (products []*productPB.Product, err error) {
 	var id int32

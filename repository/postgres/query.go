@@ -17,7 +17,7 @@ func (repo *Repository) Index() (products []*productPB.Product, err error) {
 	var id int32
 	var name, description, picture string
 	var price float64
-	var status bool
+	var status string
 
 	query := "SELECT * FROM products"
 	rows, err := repo.DB.Query(query)
@@ -48,7 +48,7 @@ func (repo *Repository) Show(product *productPB.Product) (*productPB.Product, er
 	var id int32
 	var name, description, picture string
 	var price float64
-	var status bool
+	var status string
 
 	query := fmt.Sprintf("SELECT * FROM products WHERE id=%d", product.Id)
 	err := repo.DB.QueryRow(query).Scan(&id, &name, &description, &price, &picture, &status)

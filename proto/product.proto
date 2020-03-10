@@ -11,7 +11,7 @@ message Product {
     string description = 3;
     double price = 4;
     string picture = 5;
-    bool status = 6;
+    string status = 6;
 }
 
 // IndexProductRequest is a message for IndexProducts

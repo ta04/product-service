@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	host     = "database"
+	host     = "localhost"
 	port     = 5432
 	user     = "sleepingnext"
 	password = "kevin99123"

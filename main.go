@@ -20,7 +20,7 @@ import (
 	"github.com/micro/go-micro"
 )
 
-var methodsWithoutAuth = map[string]bool{"Product.Index": true, "Product.Show": true}
+var methodsWithoutAuth = map[string]bool{"ProductService.IndexProducts": true, "ProductService.ShowProduct": true}
 
 func main() {
 	// Create a new service
@@ -62,6 +62,7 @@ func main() {
 func AuthWrapper(fn server.HandlerFunc) server.HandlerFunc {
 	return func(ctx context.Context, req server.Request, res interface{}) error {
 		method := req.Method()
+		log.Println(method)
 		if _, ok := methodsWithoutAuth[method]; ok {
 			return fn(ctx, req, res)
 		}
@@ -75,7 +76,7 @@ func AuthWrapper(fn server.HandlerFunc) server.HandlerFunc {
 		log.Println("authenticating with token: ", token)
 
 		// Validate the token
-		authClient := authPB.NewAuthServiceClient("go.micro.srv.auth", client.DefaultClient)
+		authClient := authPB.NewAuthServiceClient("com.ta04.srv.auth", client.DefaultClient)
 		_, err := authClient.ValidateToken(context.Background(), &authPB.Token{
 			Token: token,
 		})

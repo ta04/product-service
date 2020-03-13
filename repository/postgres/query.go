@@ -50,7 +50,7 @@ func (repo *Repository) Show(product *productPB.Product) (*productPB.Product, er
 	var price float64
 	var status string
 
-	query := fmt.Sprintf("SELECT * FROM products WHERE id=%d", product.Id)
+	query := fmt.Sprintf("SELECT * FROM products WHERE id = %d", product.Id)
 	err := repo.DB.QueryRow(query).Scan(&id, &name, &description, &price, &picture, &status)
 	if err != nil {
 		return nil, err

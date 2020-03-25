@@ -62,7 +62,6 @@ func main() {
 func AuthWrapper(fn server.HandlerFunc) server.HandlerFunc {
 	return func(ctx context.Context, req server.Request, res interface{}) error {
 		method := req.Method()
-		log.Println(method)
 		if _, ok := methodsWithoutAuth[method]; ok {
 			return fn(ctx, req, res)
 		}

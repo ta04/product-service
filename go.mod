@@ -14,3 +14,5 @@ require (
 	github.com/prometheus/client_golang v1.3.0 // indirect
 	golang.org/x/net v0.0.0-20200301022130-244492dfa37a
 )
+
+// +heroku goVersion go1.13.8

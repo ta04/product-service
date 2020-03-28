@@ -27,6 +27,7 @@ func main() {
 	s := micro.NewService(
 		micro.Name("com.ta04.srv.product"),
 		micro.WrapHandler(AuthWrapper),
+		micro.Address(":50051"),
 	)
 
 	// Initialize the service

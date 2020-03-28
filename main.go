@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"log"
+	"os"
 
 	"github.com/micro/go-micro/client"
 	"github.com/micro/go-micro/metadata"
@@ -23,11 +24,17 @@ import (
 var methodsWithoutAuth = map[string]bool{"ProductService.IndexProducts": true, "ProductService.ShowProduct": true}
 
 func main() {
+	// Take or set the port
+	port := ":" + os.Getenv("PORT")
+	if port == ":" {
+		port = ":50051"
+	}
+
 	// Create a new service
 	s := micro.NewService(
 		micro.Name("com.ta04.srv.product"),
 		micro.WrapHandler(AuthWrapper),
-		micro.Address(":50051"),
+		micro.Address(port),
 	)
 
 	// Initialize the service

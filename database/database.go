@@ -8,11 +8,11 @@ import (
 )
 
 const (
-	host     = "localhost"
+	host     = "ec2-52-86-33-50.compute-1.amazonaws.com"
 	port     = 5432
-	user     = "sleepingnext"
-	password = "kevin99123"
-	dbname   = "products"
+	user     = "bguaglboeqykqh"
+	password = "04cb699639a52efc8710fdd3e44680fe6eb22fbf1d973e300011d14e7df712d9"
+	dbname   = "d81epgnhgvfe3s"
 )
 
 // OpenPostgresConnection is to connect to postgres database

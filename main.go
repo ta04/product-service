@@ -19,6 +19,7 @@ import (
 	"github.com/SleepingNext/product-service/repository/postgres"
 	_ "github.com/lib/pq"
 	"github.com/micro/go-micro"
+	"github.com/micro/go-plugins/registry/consul"
 )
 
 var methodsWithoutAuth = map[string]bool{"ProductService.IndexProducts": true, "ProductService.ShowProduct": true}
@@ -30,11 +31,15 @@ func main() {
 		port = ":50051"
 	}
 
+	// Create a new registry
+	registry := consul.NewRegistry()
+
 	// Create a new service
 	s := micro.NewService(
 		micro.Name("com.ta04.srv.product"),
 		micro.WrapHandler(AuthWrapper),
 		micro.Address(port),
+		micro.Registry(registry),
 	)
 
 	// Initialize the service

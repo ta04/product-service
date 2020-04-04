@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 11.7 (Ubuntu 11.7-1.pgdg18.04+1)
--- Dumped by pg_dump version 11.7 (Ubuntu 11.7-1.pgdg18.04+1)
+-- Dumped from database version 11.7 (Ubuntu 11.7-2.pgdg18.04+1)
+-- Dumped by pg_dump version 11.7 (Ubuntu 11.7-2.pgdg18.04+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -21,19 +21,9 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: products; Type: DATABASE; Owner: sleepingnext
---
-
-CREATE DATABASE products;
-
-ALTER DATABASE products OWNER TO sleepingnext;
-
-
---
 -- Name: products; Type: TABLE; Schema: public; Owner: sleepingnext
 --
 
-\connect products;
 CREATE TABLE public.products (
     id bigint NOT NULL,
     name character varying(255) NOT NULL,
@@ -86,7 +76,7 @@ COPY public.products (id, name, description, price, picture, status) FROM stdin;
 -- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sleepingnext
 --
 
-SELECT pg_catalog.setval('public.products_id_seq', 9, true);
+SELECT pg_catalog.setval('public.products_id_seq', 1, false);
 
 
 --

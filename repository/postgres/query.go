@@ -1,4 +1,19 @@
-// product-service/repository/postgres/query.go
+/*
+Dear Programmers,
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*                                                 *
+*	This file belongs to Kevin Veros Hamonangan   *
+*	and	Fandi Fladimir Dachi and is a part of     *
+*	our	last project as the student of Del        *
+*	Institute of Technology, Sitoluama.           *
+*	Please contact us via Instagram:              *
+*	sleepingnext and fandi_dachi                  *
+*	before copying this file.                     *
+*	Thank you, buddy. 😊                          *
+*                                                 *
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
 
 package postgres
 
@@ -9,12 +24,13 @@ import (
 	productPB "github.com/SleepingNext/product-service/proto"
 )
 
-type Repository struct {
+// Postgres is the implementor of Postgres interface
+type Postgres struct {
 	DB *sql.DB
 }
 
-// Index will index all active products
-func (repo *Repository) Index() (products []*productPB.Product, err error) {
+// Index indexes all active  products
+func (repo *Postgres) Index() (products []*productPB.Product, err error) {
 	var id int32
 	var name, description, picture string
 	var price float64
@@ -45,8 +61,8 @@ func (repo *Repository) Index() (products []*productPB.Product, err error) {
 	return products, err
 }
 
-// Show will show an active products by it's id
-func (repo *Repository) Show(product *productPB.Product) (*productPB.Product, error) {
+// Show shows an active products by id
+func (repo *Postgres) Show(product *productPB.Product) (*productPB.Product, error) {
 	var id int32
 	var name, description, picture string
 	var price float64

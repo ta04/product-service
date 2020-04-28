@@ -7,6 +7,7 @@ require (
 	github.com/SleepingNext/product-service-cli v0.0.0-20200312032000-f9e80f3b55cf // indirect
 	github.com/golang/protobuf v1.3.4
 	github.com/grpc-ecosystem/grpc-gateway v1.9.5 // indirect
+	github.com/joho/godotenv v1.3.0
 	github.com/lib/pq v1.3.0
 	github.com/micro/go-micro v1.18.0
 	github.com/micro/go-plugins/registry/consul v0.0.0-20200119172437-4fe21aa238fd

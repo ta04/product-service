@@ -1,4 +1,19 @@
-// product-service/handler/handler.go
+/*
+Dear Programmers,
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*                                                 *
+*	This file belongs to Kevin Veros Hamonangan   *
+*	and	Fandi Fladimir Dachi and is a part of     *
+*	our	last project as the student of Del        *
+*	Institute of Technology, Sitoluama.           *
+*	Please contact us via Instagram:              *
+*	sleepingnext and fandi_dachi                  *
+*	before copying this file.                     *
+*	Thank you, buddy. 😊                          *
+*                                                 *
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
 
 package handler
 
@@ -9,17 +24,20 @@ import (
 	productRepo "github.com/SleepingNext/product-service/repository"
 )
 
-type handler struct {
+// Handler is the handler of order service
+type Handler struct {
 	repository productRepo.Repository
 }
 
-func NewHandler(repo productRepo.Repository) *handler {
-	return &handler{
+// NewHandler creates a new product service handler
+func NewHandler(repo productRepo.Repository) *Handler {
+	return &Handler{
 		repository: repo,
 	}
 }
 
-func (h *handler) IndexProducts(ctx context.Context, req *productPB.IndexProductsRequest, res *productPB.Response) error {
+// IndexProducts indexes the products
+func (h *Handler) IndexProducts(ctx context.Context, req *productPB.IndexProductsRequest, res *productPB.Response) error {
 	products, err := h.repository.Index()
 	if err != nil {
 		return err
@@ -31,7 +49,8 @@ func (h *handler) IndexProducts(ctx context.Context, req *productPB.IndexProduct
 	return err
 }
 
-func (h *handler) ShowProduct(ctx context.Context, req *productPB.Product, res *productPB.Response) error {
+// ShowProduct shows a product by ID
+func (h *Handler) ShowProduct(ctx context.Context, req *productPB.Product, res *productPB.Response) error {
 	product, err := h.repository.Show(req)
 	if err != nil {
 		return err
@@ -43,7 +62,8 @@ func (h *handler) ShowProduct(ctx context.Context, req *productPB.Product, res *
 	return nil
 }
 
-func (h *handler) StoreProduct(ctx context.Context, req *productPB.Product, res *productPB.Response) error {
+// StoreProduct stores a new product
+func (h *Handler) StoreProduct(ctx context.Context, req *productPB.Product, res *productPB.Response) error {
 	product, err := h.repository.Store(req)
 	if err != nil {
 		return err
@@ -55,7 +75,8 @@ func (h *handler) StoreProduct(ctx context.Context, req *productPB.Product, res 
 	return err
 }
 
-func (h *handler) UpdateProduct(ctx context.Context, req *productPB.Product, res *productPB.Response) error {
+// UpdateProduct updates a product
+func (h *Handler) UpdateProduct(ctx context.Context, req *productPB.Product, res *productPB.Response) error {
 	product, err := h.repository.Update(req)
 	if err != nil {
 		return err
@@ -67,7 +88,8 @@ func (h *handler) UpdateProduct(ctx context.Context, req *productPB.Product, res
 	return nil
 }
 
-func (h *handler) DestroyProduct(ctx context.Context, req *productPB.Product, res *productPB.Response) error {
+// DestroyProduct destroys a product
+func (h *Handler) DestroyProduct(ctx context.Context, req *productPB.Product, res *productPB.Response) error {
 	product, err := h.repository.Destroy(req)
 	if err != nil {
 		return err

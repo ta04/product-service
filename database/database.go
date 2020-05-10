@@ -21,7 +21,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/SleepingNext/product-service/config"
+	"github.com/ta04/product-service/config"
 )
 
 // OpenPostgresConnection opens a connection to postgres database

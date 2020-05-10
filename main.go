@@ -20,14 +20,14 @@ package main
 import (
 	"log"
 
-	"github.com/SleepingNext/product-service/config"
-	"github.com/SleepingNext/product-service/database"
-	"github.com/SleepingNext/product-service/handler"
-	productPB "github.com/SleepingNext/product-service/proto"
-	"github.com/SleepingNext/product-service/repository/postgres"
 	_ "github.com/lib/pq"
 	"github.com/micro/go-micro"
 	"github.com/micro/go-plugins/registry/consul"
+	"github.com/ta04/product-service/config"
+	"github.com/ta04/product-service/database"
+	"github.com/ta04/product-service/handler"
+	productPB "github.com/ta04/product-service/proto"
+	"github.com/ta04/product-service/repository/postgres"
 )
 
 func main() {

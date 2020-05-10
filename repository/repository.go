@@ -18,13 +18,13 @@ Dear Programmers,
 package repository
 
 import (
-	productPB "github.com/SleepingNext/product-service/proto"
+	productPB "github.com/ta04/product-service/proto"
 )
 
 // Repository is the interface of repositories.
 // As there are number of repositories can be used.
 type Repository interface {
-	Index() ([]*productPB.Product, error)
+	Index(*productPB.IndexProductsRequest) ([]*productPB.Product, error)
 	Show(*productPB.Product) (*productPB.Product, error)
 	Store(*productPB.Product) (*productPB.Product, error)
 	Update(*productPB.Product) (*productPB.Product, error)

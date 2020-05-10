@@ -20,7 +20,7 @@ package postgres
 import (
 	"fmt"
 
-	productPB "github.com/SleepingNext/product-service/proto"
+	productPB "github.com/ta04/product-service/proto"
 )
 
 // Store stores a new product

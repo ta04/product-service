@@ -20,8 +20,8 @@ package handler
 import (
 	"context"
 
-	productPB "github.com/SleepingNext/product-service/proto"
-	productRepo "github.com/SleepingNext/product-service/repository"
+	productPB "github.com/ta04/product-service/proto"
+	productRepo "github.com/ta04/product-service/repository"
 )
 
 // Handler is the handler of order service
@@ -38,7 +38,7 @@ func NewHandler(repo productRepo.Repository) *Handler {
 
 // IndexProducts indexes the products
 func (h *Handler) IndexProducts(ctx context.Context, req *productPB.IndexProductsRequest, res *productPB.Response) error {
-	products, err := h.repository.Index()
+	products, err := h.repository.Index(req)
 	if err != nil {
 		return err
 	}

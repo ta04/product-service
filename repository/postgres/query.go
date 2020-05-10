@@ -21,7 +21,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	productPB "github.com/SleepingNext/product-service/proto"
+	productPB "github.com/ta04/product-service/proto"
 )
 
 // Postgres is the implementor of Postgres interface
@@ -29,12 +29,11 @@ type Postgres struct {
 	DB *sql.DB
 }
 
-// Index indexes all active  products
-func (repo *Postgres) Index() (products []*productPB.Product, err error) {
+// Index indexes all active products
+func (repo *Postgres) Index(req *productPB.IndexProductsRequest) (products []*productPB.Product, err error) {
 	var id int32
-	var name, description, picture string
+	var name, description, picture, status string
 	var price float64
-	var status string
 
 	query := "SELECT * FROM products WHERE status = 'active'"
 	rows, err := repo.DB.Query(query)
@@ -61,12 +60,11 @@ func (repo *Postgres) Index() (products []*productPB.Product, err error) {
 	return products, err
 }
 
-// Show shows an active products by id
+// Show shows an active product by id
 func (repo *Postgres) Show(product *productPB.Product) (*productPB.Product, error) {
 	var id int32
-	var name, description, picture string
+	var name, description, picture, status string
 	var price float64
-	var status string
 
 	query := fmt.Sprintf("SELECT * FROM products WHERE id = %d AND status = 'active'", product.Id)
 	err := repo.DB.QueryRow(query).Scan(&id, &name, &description, &price, &picture, &status)

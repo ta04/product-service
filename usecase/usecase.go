@@ -15,18 +15,15 @@ Dear Programmers,
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-package repository
+package usecase
 
-import (
-	proto "github.com/ta04/product-service/model/proto"
-)
+import proto "github.com/ta04/product-service/model/proto"
 
-// Repository is the interface of repositories.
-// As there are number of repositories can be used.
-type Repository interface {
-	GetAllByQuery(request *proto.GetAllProductsRequest) ([]*proto.Product, error)
-	GetAll(request *proto.GetAllProductsRequest) ([]*proto.Product, error)
-	GetOne(request *proto.GetOneProductRequest) (*proto.Product, error)
-	CreateOne(product *proto.Product) (*proto.Product, error)
-	UpdateOne(product *proto.Product) (*proto.Product, error)
+// usecase is the interface of usecases.
+// As there are many version of usecases can be made.
+type Usecase interface {
+	GetAll(request *proto.GetAllProductsRequest) ([]*proto.Product, *proto.Error)
+	GetOne(request *proto.GetOneProductRequest) (*proto.Product, *proto.Error)
+	CreateOne(user *proto.Product) (*proto.Product, *proto.Error)
+	UpdateOne(user *proto.Product) (*proto.Product, *proto.Error)
 }

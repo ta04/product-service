@@ -21,22 +21,31 @@ import (
 	"database/sql"
 	"fmt"
 
-	productPB "github.com/ta04/product-service/proto"
+	proto "github.com/ta04/product-service/model/proto"
 )
 
-// Postgres is the implementor of Postgres interface
+// Postgres is the implementor of Repository interface
 type Postgres struct {
 	DB *sql.DB
 }
 
-// Index indexes all active products
-func (repo *Postgres) Index(req *productPB.IndexProductsRequest) (products []*productPB.Product, err error) {
+// NewPostgres will create a new postgres instance
+func NewPostgres(db *sql.DB) *Postgres {
+	return &Postgres{
+		DB: db,
+	}
+}
+
+// GetAllByQuery will get all products by query
+func (postgres *Postgres) GetAllByQuery(request *proto.GetAllProductsRequest) ([]*proto.Product, error) {
 	var id int32
 	var name, description, picture, status string
 	var price float64
+	var products []*proto.Product
 
-	query := "SELECT * FROM products WHERE status = 'active'"
-	rows, err := repo.DB.Query(query)
+	query := fmt.Sprintf("SELECT * FROM products WHERE (LOWER(name) LIKE '%%%s%%' OR LOWER(description) LIKE" +
+		" '%%%s%%') AND status = '%s'", request.Query, request.Query, request.Status)
+	rows, err := postgres.DB.Query(query)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +55,7 @@ func (repo *Postgres) Index(req *productPB.IndexProductsRequest) (products []*pr
 		if err != nil {
 			return nil, err
 		}
-		product := &productPB.Product{
+		product := &proto.Product{
 			Id:          id,
 			Name:        name,
 			Description: description,
@@ -60,19 +69,51 @@ func (repo *Postgres) Index(req *productPB.IndexProductsRequest) (products []*pr
 	return products, err
 }
 
-// Show shows an active product by id
-func (repo *Postgres) Show(product *productPB.Product) (*productPB.Product, error) {
+// GetAll will get all products
+func (postgres *Postgres) GetAll(request *proto.GetAllProductsRequest) ([]*proto.Product, error) {
 	var id int32
 	var name, description, picture, status string
 	var price float64
+	var products []*proto.Product
 
-	query := fmt.Sprintf("SELECT * FROM products WHERE id = %d AND status = 'active'", product.Id)
-	err := repo.DB.QueryRow(query).Scan(&id, &name, &description, &price, &picture, &status)
+	query := fmt.Sprintf("SELECT * FROM products WHERE status = '%s'", request.Status)
+	rows, err := postgres.DB.Query(query)
 	if err != nil {
 		return nil, err
 	}
 
-	return &productPB.Product{
+	for rows.Next() {
+		err := rows.Scan(&id, &name, &description, &price, &picture, &status)
+		if err != nil {
+			return nil, err
+		}
+		product := &proto.Product{
+			Id:          id,
+			Name:        name,
+			Description: description,
+			Picture:     picture,
+			Price:       price,
+			Status:      status,
+		}
+		products = append(products, product)
+	}
+
+	return products, err
+}
+
+// GetOne will get a product by id
+func (postgres *Postgres) GetOne(request *proto.GetOneProductRequest) (*proto.Product, error) {
+	var id int32
+	var name, description, picture, status string
+	var price float64
+
+	query := fmt.Sprintf("SELECT * FROM products WHERE id = %d", request.Id)
+	err := postgres.DB.QueryRow(query).Scan(&id, &name, &description, &price, &picture, &status)
+	if err != nil {
+		return nil, err
+	}
+
+	return &proto.Product{
 		Id:          id,
 		Name:        name,
 		Description: description,

@@ -41,17 +41,19 @@ SET default_with_oids = false;
 -- Name: products; Type: TABLE; Schema: public; Owner: sleepingnext
 --
 
-CREATE TABLE public.products (
-    id bigint NOT NULL,
-    name character varying(255) NOT NULL,
+CREATE TABLE public.products
+(
+    id          bigint                  NOT NULL,
+    name        character varying(255)  NOT NULL,
     description character varying(1000) NOT NULL,
-    price numeric NOT NULL,
-    picture character varying(255) NOT NULL,
-    status character varying(255) NOT NULL
+    price       numeric                 NOT NULL,
+    picture     character varying(255)  NOT NULL,
+    status      character varying(255)  NOT NULL
 );
 
 
-ALTER TABLE public.products OWNER TO sleepingnext;
+ALTER TABLE public.products
+    OWNER TO sleepingnext;
 
 --
 -- Name: products_id_seq; Type: SEQUENCE; Schema: public; Owner: sleepingnext
@@ -65,7 +67,8 @@ CREATE SEQUENCE public.products_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.products_id_seq OWNER TO sleepingnext;
+ALTER TABLE public.products_id_seq
+    OWNER TO sleepingnext;
 
 --
 -- Name: products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: sleepingnext
@@ -78,7 +81,8 @@ ALTER SEQUENCE public.products_id_seq OWNED BY public.products.id;
 -- Name: products id; Type: DEFAULT; Schema: public; Owner: sleepingnext
 --
 
-ALTER TABLE ONLY public.products ALTER COLUMN id SET DEFAULT nextval('public.products_id_seq'::regclass);
+ALTER TABLE ONLY public.products
+    ALTER COLUMN id SET DEFAULT nextval('public.products_id_seq'::regclass);
 
 
 --

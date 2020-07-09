@@ -19,7 +19,6 @@ syntax = "proto3";
 
 package com.ta04.srv.product;
 
-// Product is a message for product
 message Product {
     int32 id = 1;
     string name = 2;
@@ -29,36 +28,36 @@ message Product {
     string status = 6;
 }
 
-// IndexProductRequest is a message for IndexProducts
-message IndexProductsRequest {}
+message GetAllProductsRequest {
+    string query = 1;
+    string status = 2;
+}
 
-// Response is a response message
+message GetOneProductRequest {
+    int32 id = 1;
+}
+
 message Response {
     Product product = 1;
     Error error = 2;
     repeated Product products = 3;
 }
 
-// Error is an error message
 message Error {
-    string code = 1;
+    int32 code = 1;
     string message = 2;
 }
 
-// ProductService is a service for product-service
 service ProductService {
-    // IndexProducts is a method to index all products
-    rpc IndexProducts(IndexProductsRequest) returns (Response) {}
+    rpc GetAllProducts (GetAllProductsRequest) returns (Response) {
+    }
 
-    // ShowProduct is a method to show a product
-    rpc ShowProduct(Product) returns (Response) {}
+    rpc GetOneProduct (GetOneProductRequest) returns (Response) {
+    }
 
-    // StoreProduct is a method to store a new product
-    rpc StoreProduct(Product) returns (Response) {}
+    rpc CreateOneProduct (Product) returns (Response) {
+    }
 
-    // UpdateProduct is a method to update a product
-    rpc UpdateProduct(Product) returns (Response) {}
-
-    // DestroyProduct is a method to delete a product
-    rpc DestroyProduct(Product) returns (Response) {}
+    rpc UpdateOneProduct (Product) returns (Response) {
+    }
 }

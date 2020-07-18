@@ -55,6 +55,7 @@ func (postgres *Postgres) GetAllByQuery(request *proto.GetAllProductsRequest) (*
 		if err != nil {
 			return nil, err
 		}
+
 		product := &proto.Product{
 			Id:          id,
 			Name:        name,
@@ -87,6 +88,7 @@ func (postgres *Postgres) GetAll(request *proto.GetAllProductsRequest) (*[]*prot
 		if err != nil {
 			return nil, err
 		}
+
 		product := &proto.Product{
 			Id:          id,
 			Name:        name,

@@ -35,19 +35,20 @@ func (usecase *Usecase) GetAll(request *proto.GetAllProductsRequest) (*[]*proto.
 	var err error
 	if request.Query != "" {
 		products, err = usecase.Repository.GetAllByQuery(request)
-		if err != nil {
-			return nil, &proto.Error{
-				Code:    http.StatusInternalServerError,
-				Message: err.Error(),
-			}
-		}
 	} else {
 		products, err = usecase.Repository.GetAll(request)
-		if err != nil {
-			return nil, &proto.Error{
-				Code:    http.StatusInternalServerError,
-				Message: err.Error(),
-			}
+	}
+
+	if products == nil || len(*products) <= 0 {
+		return nil, &proto.Error{
+			Code:    http.StatusInternalServerError,
+			Message: "no products found",
+		}
+	}
+	if err != nil {
+		return nil, &proto.Error{
+			Code:    http.StatusInternalServerError,
+			Message: err.Error(),
 		}
 	}
 

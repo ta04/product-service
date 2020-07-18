@@ -37,7 +37,7 @@ func NewPostgres(db *sql.DB) *Postgres {
 }
 
 // GetAllByQuery will get all products by query
-func (postgres *Postgres) GetAllByQuery(request *proto.GetAllProductsRequest) ([]*proto.Product, error) {
+func (postgres *Postgres) GetAllByQuery(request *proto.GetAllProductsRequest) (*[]*proto.Product, error) {
 	var id int32
 	var name, description, picture, status string
 	var price float64
@@ -66,11 +66,11 @@ func (postgres *Postgres) GetAllByQuery(request *proto.GetAllProductsRequest) ([
 		products = append(products, product)
 	}
 
-	return products, err
+	return &products, err
 }
 
 // GetAll will get all products
-func (postgres *Postgres) GetAll(request *proto.GetAllProductsRequest) ([]*proto.Product, error) {
+func (postgres *Postgres) GetAll(request *proto.GetAllProductsRequest) (*[]*proto.Product, error) {
 	var id int32
 	var name, description, picture, status string
 	var price float64
@@ -98,7 +98,7 @@ func (postgres *Postgres) GetAll(request *proto.GetAllProductsRequest) ([]*proto
 		products = append(products, product)
 	}
 
-	return products, err
+	return &products, err
 }
 
 // GetOne will get a product by id

@@ -19,7 +19,7 @@ func NewUsecase(repository repository.Repository) *Usecase {
 	}
 }
 
-func (usecase *Usecase) GetAll(request *proto.GetAllProductsRequest) ([]*proto.Product, *proto.Error) {
+func (usecase *Usecase) GetAll(request *proto.GetAllProductsRequest) (*[]*proto.Product, *proto.Error) {
 	if request == nil {
 		return nil, &proto.Error{
 			Code:    http.StatusBadRequest,
@@ -31,14 +31,14 @@ func (usecase *Usecase) GetAll(request *proto.GetAllProductsRequest) ([]*proto.P
 		request.Status = "active"
 	}
 
-	var products []*proto.Product
+	var products *[]*proto.Product
 	var err error
 	if request.Query != "" {
 		products, err = usecase.Repository.GetAllByQuery(request)
 		if err != nil {
 			return nil, &proto.Error{
 				Code:    http.StatusInternalServerError,
-				Message: http.StatusText(http.StatusInternalServerError),
+				Message: err.Error(),
 			}
 		}
 	} else {
@@ -46,7 +46,7 @@ func (usecase *Usecase) GetAll(request *proto.GetAllProductsRequest) ([]*proto.P
 		if err != nil {
 			return nil, &proto.Error{
 				Code:    http.StatusInternalServerError,
-				Message: http.StatusText(http.StatusInternalServerError),
+				Message: err.Error(),
 			}
 		}
 	}
@@ -66,7 +66,7 @@ func (usecase *Usecase) GetOne(request *proto.GetOneProductRequest) (*proto.Prod
 	if err != nil {
 		return nil, &proto.Error{
 			Code:    http.StatusInternalServerError,
-			Message: http.StatusText(http.StatusInternalServerError),
+			Message: err.Error(),
 		}
 	}
 
@@ -74,11 +74,18 @@ func (usecase *Usecase) GetOne(request *proto.GetOneProductRequest) (*proto.Prod
 }
 
 func (usecase *Usecase) CreateOne(product *proto.Product) (*proto.Product, *proto.Error) {
+	if product == nil {
+		return nil, &proto.Error{
+			Code:    http.StatusBadRequest,
+			Message: http.StatusText(http.StatusBadRequest),
+		}
+	}
+
 	product, err := usecase.Repository.CreateOne(product)
 	if err != nil {
 		return nil, &proto.Error{
 			Code:    http.StatusInternalServerError,
-			Message: http.StatusText(http.StatusInternalServerError),
+			Message: err.Error(),
 		}
 	}
 
@@ -86,11 +93,18 @@ func (usecase *Usecase) CreateOne(product *proto.Product) (*proto.Product, *prot
 }
 
 func (usecase *Usecase) UpdateOne(product *proto.Product) (*proto.Product, *proto.Error) {
+	if product == nil {
+		return nil, &proto.Error{
+			Code:    http.StatusBadRequest,
+			Message: http.StatusText(http.StatusBadRequest),
+		}
+	}
+
 	product, err := usecase.Repository.UpdateOne(product)
 	if err != nil {
 		return nil, &proto.Error{
 			Code:    http.StatusInternalServerError,
-			Message: http.StatusText(http.StatusInternalServerError),
+			Message: err.Error(),
 		}
 	}
 

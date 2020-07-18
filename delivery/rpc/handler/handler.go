@@ -47,7 +47,7 @@ func (handler *Handler) GetAllProducts(ctx context.Context, req *proto.GetAllPro
 		return errors.New(err.Message)
 	}
 
-	res.Products = products
+	res.Products = *products
 	res.Error = nil
 
 	return nil

@@ -7,7 +7,7 @@ import (
 	"github.com/ta04/product-service/repository"
 )
 
-// usecase is the struct of product usecase
+// Usecase is the struct of product usecase
 type Usecase struct {
 	Repository repository.Repository
 }

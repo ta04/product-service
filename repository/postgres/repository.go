@@ -39,7 +39,7 @@ func (postgres *Postgres) CreateOne(product *proto.Product) (*proto.Product, err
 // UpdateOne will update a product
 func (postgres *Postgres) UpdateOne(product *proto.Product) (*proto.Product, error) {
 	query := fmt.Sprintf("UPDATE products SET name = '%s', description = '%s', price = %f, picture = '%s', status = '%s'"+
-		" WHERE id = %d", product.Name, product.Description, product.Price, product.Status, product.Picture, product.Id)
+		" WHERE id = %d", product.Name, product.Description, product.Price , product.Picture, product.Status, product.Id)
 	res, err := postgres.DB.Exec(query)
 	if err != nil {
 		return nil, err

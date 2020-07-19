@@ -18,6 +18,7 @@ Dear Programmers,
 package postgres
 
 import (
+	"errors"
 	"fmt"
 
 	proto "github.com/ta04/product-service/model/proto"
@@ -39,9 +40,18 @@ func (postgres *Postgres) CreateOne(product *proto.Product) (*proto.Product, err
 func (postgres *Postgres) UpdateOne(product *proto.Product) (*proto.Product, error) {
 	query := fmt.Sprintf("UPDATE products SET name = '%s', description = '%s', price = %f, picture = '%s', status = '%s'"+
 		" WHERE id = %d", product.Name, product.Description, product.Price, product.Status, product.Picture, product.Id)
-	_, err := postgres.DB.Exec(query)
+	res, err := postgres.DB.Exec(query)
 	if err != nil {
 		return nil, err
+	}
+
+	count, err := res.RowsAffected()
+	if err != nil {
+		return nil, err
+	}
+
+	if count <= 0 {
+		return nil, errors.New("sql: no rows found")
 	}
 
 	return product, nil
